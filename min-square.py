@@ -30,12 +30,17 @@ def linear_regression(x_list, y_list):
     return (m, b)
 
 
+X_LABEL = "Apperant Temperature Difference (C)"
+Y_LABEL = "Wind Speed (km/h)"
+
+
 def read_weather_history():
     # "Temperature (C)": x
     # "Wind Speed (km/h)": y
     frame = pd.read_csv("weatherHistory.csv")
-    x_data = frame["Temperature (C)"]
-    y_data = frame["Wind Speed (km/h)"]
+    # x_data = frame[X_LABEL]
+    x_data = frame["Apparent Temperature (C)"] - frame["Temperature (C)"]
+    y_data = frame[Y_LABEL]
     return (x_data, y_data)
 
 
@@ -49,11 +54,11 @@ y_pred = [m*x_coord[i]+b for i in range(N)]
 
 error = sum((y_pred[i] - y_coord[i]) ** 2 for i in range(N))
 # print("Dataset:", list(zip(x_coord, y_coord)))
-print("Linear Regression:", "%fx + %f" % (m, b))
+print("Linear Regression:", "y = %fx + %f" % (m, b))
 print("Error:", error)
 plt.scatter(x_coord, y_coord, s=1, alpha=0.1)
 plt.plot(x_coord, y_pred, color='red')
-plt.xlabel("Temperature (C)")
-plt.ylabel("Wind Speed (km/h)")
-plt.title("Linear Regression: Temperature vs. Wind Speed")
+plt.xlabel(X_LABEL)
+plt.ylabel(Y_LABEL)
+plt.title("Linear Regression: %s vs. %s" % (X_LABEL, Y_LABEL))
 plt.show()
